@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greek Metrics Practice</title>
+    <style>
+        /* Load New Athena Unicode font */
+        @font-face {
+            font-family: 'New Athena Unicode';
+            src: url('fonts/new_athena_unicode.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Basic styling with New Athena Unicode as the default font */
+        body {
+            font-family: 'New Athena Unicode', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .option {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .option:hover {
+            background-color: #0056b3;
+        }
+        .answer-display {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="question">Select the metric sequence for: a =</div>
+    <div class="options">
+        <!-- Buttons for selecting metric elements -->
+        <button class="option" onclick="selectOption('a')">a</button>
+        <button class="option" onclick="selectOption('b')">b</button>
+        <button class="option" onclick="selectOption('b')">b</button>
+        <button class="option" onclick="selectOption('b')">b</button>
+        <button class="option" onclick="selectOption('c')">c</button>
+    </div>
+    <button onclick="checkAnswer()" class="option" style="background-color: #28a745;">Check Answer</button>
+    <div class="answer-display" id="answerDisplay"></div>
+</div>
+
+<script>
+    // Track selected answer
+    let selectedAnswer = '';
+
+    // Function to add the selected option to the answer
+    function selectOption(letter) {
+        selectedAnswer += letter;
+        document.getElementById('answerDisplay').textContent = selectedAnswer;
+    }
+
+    // Function to check the answer
+    function checkAnswer() {
+        const correctAnswer = 'abbbc'; // This should be the expected sequence for the question
+        if (selectedAnswer === correctAnswer) {
+            alert('Correct!');
+        } else {
+            alert('Try again!');
+            selectedAnswer = ''; // Reset the answer
+            document.getElementById('answerDisplay').textContent = '';
+        }
+    }
+</script>
+
+</body>
+</html>
