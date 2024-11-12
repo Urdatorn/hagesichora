@@ -5,27 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greek Metrics Practice</title>
     <style>
-        /* Load New Athena Unicode font */
+        /* Styling (same as before) */
         @font-face {
             font-family: 'New Athena Unicode';
             src: url('fonts/new_athena_unicode.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
-
-        /* Basic styling with New Athena Unicode as the default font */
         body {
             font-family: 'New Athena Unicode', Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background-color: #f5eed7;
+        }
+        .logotype {
+            font-family: 'Courier', monospace;
+            white-space: pre;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
         }
         .container {
             text-align: center;
-            background-color: #fff;
+            background-color: #d2b48c;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -34,7 +40,7 @@
             font-size: 1.5em;
             margin-bottom: 20px;
         }
-        .options {
+        .options, .answer-sequence {
             display: flex;
             justify-content: center;
             gap: 10px;
@@ -42,15 +48,16 @@
         }
         .option {
             padding: 10px 20px;
-            background-color: #007BFF;
-            color: #fff;
+            background-color: #f5eed7;
+            color: #000;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.5em;
+            font-family: 'New Athena Unicode', Arial, sans-serif;
         }
         .option:hover {
-            background-color: #0056b3;
+            background-color: #e3d6b6;
         }
         .answer-display {
             font-size: 1.2em;
@@ -60,41 +67,116 @@
 </head>
 <body>
 
+<div class="logotype">
+    ▗▖ ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖ ▗▄▄▖▗▖ ▗▖ ▗▄▖ ▗▄▄▖  ▗▄▖ <br>
+    ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌   ▐▌     █  ▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌<br>
+    ▐▛▀▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘ ▝▀▚▖  █  ▐▌   ▐▛▀▜▌▐▌ ▐▌▐▛▀▚▖▐▛▀▜▌<br>
+    ▐▌ ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▗▄▄▞▘▗▄█▄▖▝▚▄▄▖▐▌ ▐▌▝▚▄▞▘▐▌ ▐▌▐▌ ▐▌<br>
+</div>
+
 <div class="container">
-    <div class="question">Select the metric sequence for: a =</div>
-    <div class="options">
-        <!-- Buttons for selecting metric elements -->
-        <button class="option" onclick="selectOption('a')">a</button>
-        <button class="option" onclick="selectOption('b')">b</button>
-        <button class="option" onclick="selectOption('b')">b</button>
-        <button class="option" onclick="selectOption('b')">b</button>
-        <button class="option" onclick="selectOption('c')">c</button>
-    </div>
-    <button onclick="checkAnswer()" class="option" style="background-color: #28a745;">Check Answer</button>
+    <div class="question" id="questionText">Loading...</div>
+    <div class="answer-sequence" id="answerSequence"></div>
+    <div class="options" id="optionsContainer"></div>
+    <button onclick="checkAnswer()" class="option" style="background-color: #f5eed7;">Check Answer</button>
     <div class="answer-display" id="answerDisplay"></div>
 </div>
 
 <script>
-    // Track selected answer
-    let selectedAnswer = '';
+    let questions = [];
+    let currentQuestionIndex = 0;
 
-    // Function to add the selected option to the answer
-    function selectOption(letter) {
-        selectedAnswer += letter;
-        document.getElementById('answerDisplay').textContent = selectedAnswer;
+    // Function to load questions from the JSON file
+    async function loadQuestions() {
+        const response = await fetch('questions.json');
+        questions = await response.json();
+        displayQuestion(questions[currentQuestionIndex]); // Display the first question
+    }
+
+    // Function to display a question and options
+    function displayQuestion(questionData) {
+        currentQuestion = questionData;
+        document.getElementById('questionText').textContent = questionData.question;
+        const optionsContainer = document.getElementById('optionsContainer');
+        optionsContainer.innerHTML = ''; // Clear previous options
+        const answerSequence = document.getElementById('answerSequence');
+        answerSequence.innerHTML = ''; // Clear previous answer sequence
+
+        questionData.options.forEach(option => {
+            const button = document.createElement('button');
+            button.className = 'option';
+            button.textContent = option;
+            button.onclick = () => handleButtonClick(button, option, questionData.questionType);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    // Function to handle button clicks based on question type
+    function handleButtonClick(button, symbol, questionType) {
+        const answerSequence = document.getElementById('answerSequence');
+
+        if (questionType === 'type') {
+            // Move the button to the answer sequence area
+            toggleButtonPosition(button);
+        } else if (questionType === 'token') {
+            // Clone the button and add the clone to the answer sequence
+            const clonedButton = button.cloneNode(true);
+            clonedButton.onclick = null; // Disable click event on clone
+            answerSequence.appendChild(clonedButton);
+        }
+    }
+
+    // Function to toggle button position for "type" questions
+    function toggleButtonPosition(button) {
+        const optionsContainer = document.getElementById('optionsContainer');
+        const answerSequence = document.getElementById('answerSequence');
+
+        if (answerSequence.contains(button)) {
+            optionsContainer.appendChild(button); // Move back to options
+        } else {
+            answerSequence.appendChild(button); // Move to answer sequence
+        }
     }
 
     // Function to check the answer
     function checkAnswer() {
-        const correctAnswer = 'abbbc'; // This should be the expected sequence for the question
-        if (selectedAnswer === correctAnswer) {
+        const answerSequence = Array.from(document.getElementById('answerSequence').children)
+                                    .map(btn => btn.textContent.trim());
+        const correctAnswer = currentQuestion.answer;
+
+        if (JSON.stringify(answerSequence) === JSON.stringify(correctAnswer)) {
             alert('Correct!');
+            loadNextQuestion(); // Load the next question if the answer is correct
         } else {
             alert('Try again!');
-            selectedAnswer = ''; // Reset the answer
-            document.getElementById('answerDisplay').textContent = '';
+            resetButtons();
         }
     }
+
+    // Function to load the next question
+    function loadNextQuestion() {
+        currentQuestionIndex += 1;
+        if (currentQuestionIndex < questions.length) {
+            displayQuestion(questions[currentQuestionIndex]);
+        } else {
+            alert("You've completed all questions!");
+            currentQuestionIndex = 0; // Reset to the first question
+            displayQuestion(questions[currentQuestionIndex]);
+        }
+    }
+
+    // Function to reset buttons to their original position
+    function resetButtons() {
+        const optionsContainer = document.getElementById('optionsContainer');
+        const answerSequence = document.getElementById('answerSequence');
+
+        Array.from(answerSequence.children).forEach(button => {
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    // Load questions when the page loads
+    loadQuestions();
 </script>
 
 </body>

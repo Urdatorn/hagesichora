@@ -1,0 +1,56 @@
+[
+    {
+        "question": "gl =",
+        "questionType": "token",
+        "options": ["\u00D7", "\u23D1", "\u2013"],
+        "answer": ["\u00D7", "\u00D7", "\u2013", "\u23D1", "\u23D1", "\u2013", "\u23D1", "\u2013"]
+    },
+    {
+        "question": "ph =",
+        "questionType": "token",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["gl", "\uEC3D"]
+    },
+    {
+        "question": "tl =",
+        "questionType": "type",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["\uEC3D", "gl"]
+    },
+    {
+        "question": "r =",
+        "questionType": "token",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["\uEC3D", "gl", "\uEC3D"]
+    },
+    {
+        "question": "hi =",
+        "questionType": "type",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["gl", "\u2013"]
+    },
+    {
+        "question": "hag =",
+        "questionType": "token",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["\uEC3D", "gl", "\u2013"]
+    },
+    {
+        "question": "ar =",
+        "questionType": "type",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["\uEC3D", "\uEC3D", "gl", "\u2013"]
+    },
+    {
+        "question": "dod =",
+        "questionType": "token",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["\uEC3D", "\uEC3D", "gl"]
+    },
+    {
+        "question": "ad =",
+        "questionType": "type",
+        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
+        "answer": ["\uEC3D", "\uEC3D", "gl", "\uEC3D"]
+    }
+]
