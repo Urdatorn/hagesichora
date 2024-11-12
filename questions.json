@@ -7,7 +7,7 @@
     },
     {
         "question": "ph =",
-        "questionType": "token",
+        "questionType": "type",
         "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
         "answer": ["gl", "\uEC3D"]
     },
@@ -19,7 +19,7 @@
     },
     {
         "question": "r =",
-        "questionType": "token",
+        "questionType": "type",
         "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
         "answer": ["\uEC3D", "gl", "\uEC3D"]
     },
@@ -31,7 +31,7 @@
     },
     {
         "question": "hag =",
-        "questionType": "token",
+        "questionType": "type",
         "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
         "answer": ["\uEC3D", "gl", "\u2013"]
     },
@@ -43,7 +43,7 @@
     },
     {
         "question": "dod =",
-        "questionType": "token",
+        "questionType": "type",
         "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
         "answer": ["\uEC3D", "\uEC3D", "gl"]
     },
