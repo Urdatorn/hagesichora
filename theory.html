@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hagesichora</title>
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="logotype">
+    ἁγησιχόρᾱ μὲν αὕτᾱ
+</div>
+
+<div class="container">
+    <div class="question" id="questionText">Loading...</div>
+    <div class="answer-sequence" id="answerSequence"></div>
+    <div class="options" id="optionsContainer"></div>
+    <button onclick="checkAnswer()" class="option" style="background-color: #f5eed7;">Check Answer</button>
+    <div class="answer-display" id="answerDisplay"></div>
+</div>
+
+<script>
+    const special_chars = {
+        "x": "\u00D7",      // Anceps
+        "u": "\u23D1",      // Short
+        "-": "\u2013",      // Longum
+        "^": "\uEC3D",      // New Athena catalexis
+    };
+
+    let questions = [];
+    let currentQuestionIndex = 0;
+
+    async function loadQuestions() {
+        const response = await fetch('questions.json');
+        let rawQuestions = await response.json();
+        questions = translateQuestions(rawQuestions);
+        shuffleArray(questions);
+        displayQuestion(questions[currentQuestionIndex]);
+    }
+
+    function translateQuestions(rawQuestions) {
+        return rawQuestions.map(question => ({
+            ...question,
+            options: question.options.map(opt => translateSymbol(opt)),
+            answer: question.answer.map(ans => translateSymbol(ans)),
+        }));
+    }
+
+    function translateSymbol(symbol) {
+        return special_chars[symbol] || symbol;
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function displayQuestion(questionData) {
+        currentQuestion = questionData;
+        document.getElementById('questionText').textContent = questionData.question;
+        const optionsContainer = document.getElementById('optionsContainer');
+        optionsContainer.innerHTML = '';
+        const answerSequence = document.getElementById('answerSequence');
+        answerSequence.innerHTML = '';
+
+        questionData.options.forEach(option => {
+            const button = document.createElement('button');
+            button.className = 'option';
+            button.textContent = option;
+            button.onclick = () => handleButtonClick(button, option, questionData.questionType);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function handleButtonClick(button, symbol, questionType) {
+        const answerSequence = document.getElementById('answerSequence');
+        if (questionType === 'type') {
+            toggleButtonPosition(button);
+        } else if (questionType === 'token') {
+            const clonedButton = button.cloneNode(true);
+            clonedButton.onclick = () => removeButton(clonedButton);
+            answerSequence.appendChild(clonedButton);
+        }
+    }
+
+    function toggleButtonPosition(button) {
+        const optionsContainer = document.getElementById('optionsContainer');
+        const answerSequence = document.getElementById('answerSequence');
+
+        if (answerSequence.contains(button)) {
+            optionsContainer.appendChild(button);
+        } else {
+            answerSequence.appendChild(button);
+        }
+    }
+
+    function removeButton(button) {
+        button.remove();
+    }
+
+    function checkAnswer() {
+        const answerSequence = Array.from(document.getElementById('answerSequence').children)
+                                    .map(btn => btn.textContent.trim());
+        const correctAnswer = currentQuestion.answer;
+
+        if (JSON.stringify(answerSequence) === JSON.stringify(correctAnswer)) {
+            alert('Correct!');
+            loadNextQuestion();
+        } else {
+            alert('Try again!');
+            resetButtons();
+        }
+    }
+
+    function loadNextQuestion() {
+        currentQuestionIndex += 1;
+        if (currentQuestionIndex < questions.length) {
+            displayQuestion(questions[currentQuestionIndex]);
+        } else {
+            alert("You've completed all questions!");
+            currentQuestionIndex = 0;
+            shuffleArray(questions);
+            displayQuestion(questions[currentQuestionIndex]);
+        }
+    }
+
+    function resetButtons() {
+        const optionsContainer = document.getElementById('optionsContainer');
+        const answerSequence = document.getElementById('answerSequence');
+
+        Array.from(answerSequence.children).forEach(button => {
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    loadQuestions();
+</script>
+
+</body>
+</html>
