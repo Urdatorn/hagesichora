@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hagesichora</title>
     <style>
-        /* Styling (same as before) */
         @font-face {
             font-family: 'New Athena Unicode';
             src: url('fonts/new_athena_unicode.ttf') format('truetype');
@@ -83,18 +82,36 @@
 </div>
 
 <script>
+    const special_chars = {
+        "x": "\u00D7",      // Anceps
+        "u": "\u23D1",      // Short
+        "-": "\u2013",      // Longum
+        "^": "\uEC3D",      // New Athena catalexis
+    };
+
     let questions = [];
     let currentQuestionIndex = 0;
 
-    // Function to load questions from the JSON file
     async function loadQuestions() {
         const response = await fetch('questions.json');
-        questions = await response.json();
-        shuffleArray(questions); // Shuffle questions before displaying the first one
-        displayQuestion(questions[currentQuestionIndex]); // Display the first question
+        let rawQuestions = await response.json();
+        questions = translateQuestions(rawQuestions);
+        shuffleArray(questions);
+        displayQuestion(questions[currentQuestionIndex]);
     }
 
-    // Function to shuffle the questions array
+    function translateQuestions(rawQuestions) {
+        return rawQuestions.map(question => ({
+            ...question,
+            options: question.options.map(opt => translateSymbol(opt)),
+            answer: question.answer.map(ans => translateSymbol(ans)),
+        }));
+    }
+
+    function translateSymbol(symbol) {
+        return special_chars[symbol] || symbol;
+    }
+
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -102,14 +119,13 @@
         }
     }
 
-    // Function to display a question and options
     function displayQuestion(questionData) {
         currentQuestion = questionData;
         document.getElementById('questionText').textContent = questionData.question;
         const optionsContainer = document.getElementById('optionsContainer');
-        optionsContainer.innerHTML = ''; // Clear previous options
+        optionsContainer.innerHTML = '';
         const answerSequence = document.getElementById('answerSequence');
-        answerSequence.innerHTML = ''; // Clear previous answer sequence
+        answerSequence.innerHTML = '';
 
         questionData.options.forEach(option => {
             const button = document.createElement('button');
@@ -120,39 +136,32 @@
         });
     }
 
-    // Function to handle button clicks based on question type
     function handleButtonClick(button, symbol, questionType) {
         const answerSequence = document.getElementById('answerSequence');
-
         if (questionType === 'type') {
-            // Move the button to the answer sequence area
             toggleButtonPosition(button);
         } else if (questionType === 'token') {
-            // Clone the button and add the clone to the answer sequence
             const clonedButton = button.cloneNode(true);
-            clonedButton.onclick = () => removeButton(clonedButton); // Add click event to remove if clicked
+            clonedButton.onclick = () => removeButton(clonedButton);
             answerSequence.appendChild(clonedButton);
         }
     }
 
-    // Function to toggle button position for "type" questions
     function toggleButtonPosition(button) {
         const optionsContainer = document.getElementById('optionsContainer');
         const answerSequence = document.getElementById('answerSequence');
 
         if (answerSequence.contains(button)) {
-            optionsContainer.appendChild(button); // Move back to options
+            optionsContainer.appendChild(button);
         } else {
-            answerSequence.appendChild(button); // Move to answer sequence
+            answerSequence.appendChild(button);
         }
     }
 
-    // Function to remove a button in "token" mode if clicked in the answer sequence
     function removeButton(button) {
         button.remove();
     }
 
-    // Function to check the answer
     function checkAnswer() {
         const answerSequence = Array.from(document.getElementById('answerSequence').children)
                                     .map(btn => btn.textContent.trim());
@@ -160,27 +169,25 @@
 
         if (JSON.stringify(answerSequence) === JSON.stringify(correctAnswer)) {
             alert('Correct!');
-            loadNextQuestion(); // Load the next question if the answer is correct
+            loadNextQuestion();
         } else {
             alert('Try again!');
             resetButtons();
         }
     }
 
-    // Function to load the next question
     function loadNextQuestion() {
         currentQuestionIndex += 1;
         if (currentQuestionIndex < questions.length) {
             displayQuestion(questions[currentQuestionIndex]);
         } else {
             alert("You've completed all questions!");
-            currentQuestionIndex = 0; // Reset to the first question
-            shuffleArray(questions); // Shuffle again for a new sequence
+            currentQuestionIndex = 0;
+            shuffleArray(questions);
             displayQuestion(questions[currentQuestionIndex]);
         }
     }
 
-    // Function to reset buttons to their original position
     function resetButtons() {
         const optionsContainer = document.getElementById('optionsContainer');
         const answerSequence = document.getElementById('answerSequence');
@@ -190,7 +197,6 @@
         });
     }
 
-    // Load questions when the page loads
     loadQuestions();
 </script>
 

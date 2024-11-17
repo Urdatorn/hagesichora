@@ -2,55 +2,55 @@
     {
         "question": "gl =",
         "questionType": "token",
-        "options": ["\u00D7", "\u23D1", "\u2013"],
-        "answer": ["\u00D7", "\u00D7", "\u2013", "\u23D1", "\u23D1", "\u2013", "\u23D1", "\u2013"]
+        "options": ["x", "u", "-"],
+        "answer": ["x", "x", "-", "u", "u", "-", "u", "-"]
     },
     {
         "question": "ph =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["gl", "\uEC3D"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["gl", "^"]
     },
     {
         "question": "tl =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["\uEC3D", "gl"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["^", "gl"]
     },
     {
         "question": "r =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["\uEC3D", "gl", "\uEC3D"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["^", "gl", "^"]
     },
     {
         "question": "hi =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["gl", "\u2013"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["gl", "-"]
     },
     {
         "question": "hag =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["\uEC3D", "gl", "\u2013"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["^", "gl", "-"]
     },
     {
         "question": "ar =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["\uEC3D", "\uEC3D", "gl", "\u2013"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["^", "^", "gl", "-"]
     },
     {
         "question": "dod =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["\uEC3D", "\uEC3D", "gl"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["^", "^", "gl"]
     },
     {
         "question": "ad =",
         "questionType": "type",
-        "options": ["gl", "\uEC3D", "\uEC3D", "\uEC3D", "\u2013"],
-        "answer": ["\uEC3D", "\uEC3D", "gl", "\uEC3D"]
+        "options": ["gl", "^", "^", "^", "-"],
+        "answer": ["^", "^", "gl", "^"]
     }
 ]
